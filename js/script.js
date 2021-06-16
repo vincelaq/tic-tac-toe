@@ -7,3 +7,8 @@ const winCombos = [
     // Diagonal
     [0,4,8],[2,4,6]
 ];
+// Defines default variables used
+let gameState;
+let currentTurn;
+// winner, null = in progress, t = tie, 1 or -1 = which winner
+let winner;
