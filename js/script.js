@@ -45,3 +45,29 @@ gameBoard.addEventListener("click", function(event) {
     console.log(currentTurn);
     determineWinner();
 });
+// Adds a game check function
+function gameRender(boardElement) {
+    for (let arrayElement of gameState) {
+        if (arrayElement === 1) {
+            boardElement.textContent = "X" ;
+        } else if (arrayElement === -1) {
+            boardElement.textContent = "O";
+        }
+    }
+};
+// Adds a winner check function
+function determineWinner() {
+    if (winner === null) {
+        if (currentTurn === 1) {
+            textBox.textContent = "X turn";
+        } else if (currentTurn === -1) {
+            textBox.textContent = "O turn";
+        };
+    } else if (winner === 't') {
+        textBox.textContent = "Tie game!";
+    } else if (winner === 1) {
+        textBox.textContent = "Congrats X!";
+    } else if (winner === -1) {
+        textBox.textContent = "Congrats O!";
+    }
+};
