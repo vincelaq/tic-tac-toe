@@ -31,3 +31,17 @@ function initGame() {
     currentTurn = 1;
     winner = null;
 };
+// Add Event Listener
+gameBoard.addEventListener("click", function(event) {
+    let boardElement = event.target;
+    let boardIndex = getKeyByValue(squares, boardElement);
+    console.log(boardElement);
+    console.log(boardIndex);
+    gameState[boardIndex] = currentTurn;
+    console.log(currentTurn);
+    console.log(gameState);
+    gameRender(boardElement);
+    currentTurn *= -1;
+    console.log(currentTurn);
+    determineWinner();
+});
