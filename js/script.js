@@ -21,3 +21,13 @@ function getKeyByValue (object, value) {
         object[key] === value
     );
 };
+// Function to initialize
+function initGame() {
+    gameState = [
+        null, null, null, 
+        null, null, null, 
+        null, null, null
+    ];
+    currentTurn = 1;
+    winner = null;
+};
