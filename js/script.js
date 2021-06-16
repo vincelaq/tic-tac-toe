@@ -10,5 +10,14 @@ const winCombos = [
 // Defines default variables used
 let gameState;
 let currentTurn;
-// winner, null = in progress, t = tie, 1 or -1 = which winner
-let winner;
+let winner; // winner, null = in progress, t = tie, 1 or -1 = which winner
+// Retrieves elements needed from the Document
+const gameBoard = document.querySelector(".gameboard");
+const squares = document.querySelectorAll(".grid-item");
+const textBox = document.querySelector("#player-turn");
+
+function getKeyByValue (object, value) {
+    return Object.keys(object).find(key => 
+        object[key] === value
+    );
+};
