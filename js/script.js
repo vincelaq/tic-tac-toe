@@ -15,6 +15,7 @@ let winner; // winner, null = in progress, t = tie, 1 or -1 = which winner
 const gameBoard = document.querySelector(".gameboard");
 const squares = document.querySelectorAll(".grid-item");
 const textBox = document.querySelector("#player-turn");
+const reset = document.querySelector("#reset");
 
 function getKeyByValue (object, value) {
     return Object.keys(object).find(key => 
@@ -69,5 +70,12 @@ function determineWinner() {
         textBox.textContent = "Congrats X!";
     } else if (winner === -1) {
         textBox.textContent = "Congrats O!";
+    }
+};
+// Adds a reset button to re-initialize
+reset.addEventListener("click", function(){initGame()});
+function clearBoard() {
+    for (let key in squares) {
+        squares[key].textContent = '';
     }
 };
