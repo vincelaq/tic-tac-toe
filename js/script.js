@@ -16,6 +16,7 @@ const gameBoard = document.querySelector(".gameboard");
 const textBox = document.getElementById("player-turn");
 const reset = document.getElementById("reset");
 const square = document.querySelectorAll(".grid-item");
+const win = document.getElementById("winner");
 
 // Function to initialize
 function initGame() {
@@ -26,20 +27,28 @@ function initGame() {
     ];
     currentTurn = 1;
     winner = null;
+    win.textContent = "";
+    gameRender();
+    displayTurn();
 };
 // Add Event Listener
 gameBoard.addEventListener("click", function(event) {
-    let targetIndex = getKeyByValue(square,event.target);
-    if (gameState[targetIndex] === null) {
-        gameState[targetIndex] = currentTurn;
-    } else {
-        return alert("That space is already taken! Choose another space.");
-    };
-    gameRender();
-    checkWinner();
-    renderMessage();
-    currentTurn *= -1;
+    if (!winner) {
+        let targetIndex = getKeyByValue(square,event.target);
+        if (gameState[targetIndex] === null) {
+            gameState[targetIndex] = currentTurn;
+        } else {
+            return alert("That space is already taken! Choose another space.");
+        };
+        gameRender();
+        checkWinner();
+        renderMessage();
+        currentTurn *= -1;
+        displayTurn();
+    }
 });
+// Add reset button
+reset.addEventListener("click", initGame);
 // Adds a game check function
 function gameRender() {
     gameState.forEach(function(stateValue, stateIndex) {
@@ -53,7 +62,9 @@ function setMarker (element, stateValue) {
         element.textContent = "X";
     } else if (stateValue === -1) {
         element.textContent = "O"
-    };
+    } else {
+        element.textContent = "";
+    }
 };
 // Adds a winner check function
 function checkWinner() {
@@ -73,28 +84,28 @@ function checkWinner() {
         }
     }
 };
-// Adds a reset button to empty the grid content
-reset.addEventListener("click", function(){
-    for (let key in square) {
-        square[key].textContent = '';
-    }
-    initGame();
-});
 // Adds a winner message
 function renderMessage () {
     if (winner === 1) {
-        alert("Player X has won!");
+        win.textContent= "Player X has won!";
     }
     if (winner === -1) {
-        alert("Player O has won!");
+        win.textContent= "Player O has won!";;
     }
     if (winner === 't') {
-        alert("It's a tie!");
+        win.textContent= "It's a tie!"; 
     }
 };
 // Adds get key by object value
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
+};
+function displayTurn () {
+    if (currentTurn === 1) {
+        textBox.textContent = "Player X Turn";
+    } else if (currentTurn === -1) {
+        textBox.textContent = "Player O Turn"
+    }
 }
-  
+
 initGame();
