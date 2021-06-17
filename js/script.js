@@ -13,15 +13,10 @@ let currentTurn;
 let winner; // winner, null = in progress, t = tie, 1 or -1 = which winner
 // Retrieves elements needed from the Document
 const gameBoard = document.querySelector(".gameboard");
-const squares = document.querySelectorAll(".grid-item");
-const textBox = document.querySelector("#player-turn");
-const reset = document.querySelector("#reset");
+const textBox = document.getElementById("player-turn");
+const reset = document.getElementById("reset");
+const square = document.querySelectorAll(".grid-item");
 
-function getKeyByValue (object, value) {
-    return Object.keys(object).find(key => 
-        object[key] === value
-    );
-};
 // Function to initialize
 function initGame() {
     gameState = [
@@ -34,48 +29,72 @@ function initGame() {
 };
 // Add Event Listener
 gameBoard.addEventListener("click", function(event) {
-    let boardElement = event.target;
-    let boardIndex = getKeyByValue(squares, boardElement);
-    console.log(boardElement);
-    console.log(boardIndex);
-    gameState[boardIndex] = currentTurn;
-    console.log(currentTurn);
-    console.log(gameState);
-    gameRender(boardElement);
+    let targetIndex = getKeyByValue(square,event.target);
+    if (gameState[targetIndex] === null) {
+        gameState[targetIndex] = currentTurn;
+    } else {
+        return alert("That space is already taken! Choose another space.");
+    };
+    gameRender();
+    checkWinner();
+    renderMessage();
     currentTurn *= -1;
-    console.log(currentTurn);
-    determineWinner();
 });
 // Adds a game check function
-function gameRender(boardElement) {
-    for (let arrayElement of gameState) {
-        if (arrayElement === 1) {
-            boardElement.textContent = "X" ;
-        } else if (arrayElement === -1) {
-            boardElement.textContent = "O";
+function gameRender() {
+    gameState.forEach(function(stateValue, stateIndex) {
+        let element = square[stateIndex];
+        setMarker(element, stateValue);
+    })
+};
+//Adds function that sets a marker for an element
+function setMarker (element, stateValue) {
+    if (stateValue === 1) {
+        element.textContent = "X";
+    } else if (stateValue === -1) {
+        element.textContent = "O"
+    };
+};
+// Adds a winner check function
+function checkWinner() {
+    if (!gameState.includes(null)) {
+        winner = 't';
+    }
+    for (let array of winCombos) {
+        let sum = 0;
+        for (let index of array) {
+            sum += gameState[index];
+        }
+        if (sum === 3) {
+            winner = 1;
+        }
+        if (sum === -3) {
+            winner = -1;
         }
     }
 };
-// Adds a winner check function
-function determineWinner() {
-    if (winner === null) {
-        if (currentTurn === 1) {
-            textBox.textContent = "X turn";
-        } else if (currentTurn === -1) {
-            textBox.textContent = "O turn";
-        };
-    } else if (winner === 't') {
-        textBox.textContent = "Tie game!";
-    } else if (winner === 1) {
-        textBox.textContent = "Congrats X!";
-    } else if (winner === -1) {
-        textBox.textContent = "Congrats O!";
+// Adds a reset button to empty the grid content
+reset.addEventListener("click", function(){
+    for (let key in square) {
+        square[key].textContent = '';
+    }
+    initGame();
+});
+// Adds a winner message
+function renderMessage () {
+    if (winner === 1) {
+        alert("Player X has won!");
+    }
+    if (winner === -1) {
+        alert("Player O has won!");
+    }
+    if (winner === 't') {
+        alert("It's a tie!");
     }
 };
-// Adds a reset button to re-initialize
-reset.addEventListener("click", function(){initGame()});
-function clearBoard() {
-    for (let key in squares) {
-        squares[key].textContent = '';
-    }
-};
+// Adds get key by object value
+function getKeyByValue(object, value) {
+    return Object.keys(object).find(key => object[key] === value);
+}
+  
+initGame();
