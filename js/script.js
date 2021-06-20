@@ -31,7 +31,7 @@ function initGame() {
     gameRender();
     displayTurn();
 };
-// Add Event Listener
+// For gameboard click
 gameBoard.addEventListener("click", function(event) {
     if (!winner) {
         let targetIndex = getKeyByValue(square,event.target);
@@ -42,12 +42,12 @@ gameBoard.addEventListener("click", function(event) {
         };
         gameRender();
         checkWinner();
-        renderMessage();
+        renderMessage();''
         currentTurn *= -1;
         displayTurn();
     }
 });
-// Add reset button
+// Reset button
 reset.addEventListener("click", initGame);
 // Adds a game check function
 function gameRender() {
@@ -56,7 +56,25 @@ function gameRender() {
         setMarker(element, stateValue);
     })
 };
-//Adds function that sets a marker for an element
+// Mouse-over Color for each player
+gameBoard.addEventListener("mouseover", function(event) {
+    let target = event.target.id.substring(3,4);
+    if (target in square) {
+        if (currentTurn === 1) {
+            square[target].style.backgroundColor = 'rgba(43, 134, 214, 0.8)';
+        } else {
+            square[target].style.backgroundColor = 'rgba(209, 82, 65, 0.8)';
+        }
+    }
+});
+// Mouse-out to change back to white
+gameBoard.addEventListener("mouseout", function(event) {
+    let target = event.target.id.substring(3,4);
+    if (target in square) {
+        square[target].style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+    }
+});
+// Adds function that sets a marker for an element
 function setMarker (element, stateValue) {
     if (stateValue === 1) {
         element.textContent = "X";
@@ -87,9 +105,11 @@ function checkWinner() {
 // Adds a winner message
 function renderMessage () {
     if (winner === 1) {
+        win.style.color = 'rgba(43, 134, 214, 0.8)';
         win.textContent= "Player X has won!";
     }
     if (winner === -1) {
+        win.style.color = 'rgba(209, 82, 65, 0.8)';
         win.textContent= "Player O has won!";;
     }
     if (winner === 't') {
@@ -101,11 +121,13 @@ function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 };
 function displayTurn () {
-    if (currentTurn === 1) {
-        textBox.textContent = "Player X Turn";
-    } else if (currentTurn === -1) {
-        textBox.textContent = "Player O Turn"
+    if (currentTurn === 1 && winner === null) {
+        textBox.textContent = "Your turn, Player X!";
+    } else if (currentTurn === -1 && winner === null) {
+        textBox.textContent = "Your turn, Player O!";
+    } else {
+        textBox.textContent = '';
     }
-}
+};
 
 initGame();

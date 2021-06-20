@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@200&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -5,14 +6,37 @@
 }
 .gameboard {
     display: inline-grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
     margin: 40px;
-    
+    grid-gap: 3px;
+    margin: 5px;
 }
 .grid-item {
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 60px;
-    font-size: 30px;
+    font-size: 100px;
+    font-family: 'Montserrat', sans-serif;
     text-align: center;
+    width: 150px;
+    height: 150px;
+    padding-top: 16px;
+}
+#winner {
+    font-size: 60px;
+}
+#player-turn {
+    font-size: 50px;
+}
+h1 {
+    font-size: 90px;
+}
+body {
+    display: flexbox;
+    text-align: center;
+}
+button {
+    background-color: gray;
+    color:rgba(255, 255, 255, 0.8);
+    width: 100px;
+    height: 25px;
 }
